@@ -28,21 +28,50 @@ Realms.World is the information and activity hub for entrance to the Realms Auto
 - [`packages/subgraph`](https://bibliothecadao.github.io/subgraph) - The L1 Starknet Messaging Indexer for Bridge Transactions
 - [`packages/apibara`](https://bibliothecadao.github.io/starknet-indexer) = The L2 indexer for Bridge and NFT Transactions
 
-### Running the app
+### How to Start
 
-This will launch storybook and the Realms.World client.
+Clone the repository and navigate to the directory.
+
+```bash
+git clone https://github.com/BibliothecaDAO/RealmsWorld.git
+cd RealmsWorld
+```
+
+Install Bun
+
+```bash
+npm install -g bun # for macOS and Linux
+```
+
+for Homebrew users
+
+```bash
+brew install oven-sh/bun/bun # for macOS and Linux
+```
+
+Bun is an all-in-one toolkit for JavaScript and TypeScript apps. It ships as a single executable called bun.
+
+Install dependencies required to launch storybook and the Realms.World client.
 
 ```bash
 bun i
 ```
 
+#### Edit Enviroment Variables
+
+Depending on which environment you want to run, first copy the values from `.env.sepolia` or `.env.mainnet` into your `.env` file.
+
+- To create your `.env` for mainnet, you will need to copy `.env.mainnet` and paste it in your `.env`.
+- Add these lines to your `.env`
+
+  `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=c8d27e7d62b1bb4d1ea2e6d4ed1604ee`
+  `DATABASE_URL=mysql://USERNAME:pscale_pw_PASSWORD@aws.connect.psdb.cloud/DATABASE_NAME?ssl={"rejectUnauthorized":true}`
+
+### Running the App
+
 ```bash
 bun run dev
 ```
-
-## Enviroment Variables
-
-Depending on which environment you want to run, either copy the values from `.env.sepolia` or `.env.mainnet` into your `.env` file.
 
 ### Documentation
 
