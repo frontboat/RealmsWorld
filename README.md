@@ -62,10 +62,10 @@ bun i
 Depending on which environment you want to run, first copy the values from `.env.sepolia` or `.env.mainnet` into your `.env` file.
 
 - To create your `.env` for mainnet, you will need to copy `.env.mainnet` and paste it in your `.env`.
-- Add these lines to your `.env`
+- Ensure these lines exist in `.env` and point to your desired location (this example is for mainnet)
 
   `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=c8d27e7d62b1bb4d1ea2e6d4ed1604ee`
-  `DATABASE_URL=mysql://USERNAME:pscale_pw_PASSWORD@aws.connect.psdb.cloud/DATABASE_NAME?ssl={"rejectUnauthorized":true}`
+  `DATABASE_URL=postgresql://readonly_rw:RealmsWorld%21@ep-frosty-sea-90384545.us-east-2.aws.neon.tech/main`
 
 ### Running the App
 
