@@ -49,7 +49,7 @@ chmod +x setup.sh
 ./setup.sh
 ```
 
-This will install all the necessary dependencies, and open a storybook for you.
+This will ask the user what environment they would like to set up their client, as well as how they would like to install the necessary dependencies.
 
 ### Last Step
 
@@ -59,14 +59,13 @@ In your web browser, navigate to
 
 Congratulations! You are now running the realms.world client locally.
 
-### Documentation
-
-Available at [Realms.World Docs](https://docs.realms.world)
-
 #### Notes on the build
 
 - The setup script installs a plethora of dependencies on your machine, which may take a few minutes to complete.
-- This script also copies `.env.mainnet` to your `.env` for mainnet by default. To customize your env for other networks, simply copy-paste everything from the `.env.goerli` or `.env.sepolia` to your `.env`. These files are located in the root directory of the project.
+
+### Documentation
+
+Available at [Realms.World Docs](https://docs.realms.world)
 
 ### Contributing
 
