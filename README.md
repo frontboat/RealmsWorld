@@ -37,45 +37,36 @@ git clone https://github.com/BibliothecaDAO/RealmsWorld.git
 cd RealmsWorld
 ```
 
-Install Bun
+### Approve the setup script to run
 
 ```bash
-npm install -g bun # for macOS and Linux
+chmod +x setup.sh
 ```
 
-for Homebrew users
+### Run the setup script
 
 ```bash
-brew install oven-sh/bun/bun # for macOS and Linux
+./setup.sh
 ```
 
-Bun is an all-in-one toolkit for JavaScript and TypeScript apps. It ships as a single executable called bun.
+This will install all the necessary dependencies, and open a storybook for you.
 
-Install dependencies required to launch storybook and the Realms.World client.
+### Last Step
 
-```bash
-bun i
-```
+In your web browser, navigate to
 
-#### Edit Enviroment Variables
+`localhost:3000`
 
-Depending on which environment you want to run, first copy the values from `.env.sepolia` or `.env.mainnet` into your `.env` file.
-
-- To create your `.env` for mainnet, you will need to copy `.env.mainnet` and paste it in your `.env`.
-- Ensure these lines exist in `.env` and point to your desired location (this example is for mainnet)
-
-  `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=c8d27e7d62b1bb4d1ea2e6d4ed1604ee`
-  `DATABASE_URL=postgresql://readonly_rw:RealmsWorld%21@ep-frosty-sea-90384545.us-east-2.aws.neon.tech/main`
-
-### Running the App
-
-```bash
-bun run dev
-```
+Congratulations! You are now running the realms.world client locally.
 
 ### Documentation
 
 Available at [Realms.World Docs](https://docs.realms.world)
+
+#### Notes on the build
+
+- The setup script installs a plethora of dependencies on your machine, which may take a few minutes to complete.
+- This script also copies `.env.mainnet` to your `.env` for mainnet by default. To customize your env for other networks, simply copy-paste everything from the `.env.goerli` or `.env.sepolia` to your `.env`. These files are located in the root directory of the project.
 
 ### Contributing
 
