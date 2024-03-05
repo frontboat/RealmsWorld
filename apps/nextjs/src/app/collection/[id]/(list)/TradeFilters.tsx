@@ -14,10 +14,13 @@ import {
 } from "@realms-world/ui";
 
 export const TradeFilters = () => {
+  // Get the necessary functions from custom hooks
   const { handleAttributeClick } = useQuery();
   const { isGrid, toggleFilter, toggleGrid } = useUIContext();
+
   return (
     <div className="ml-auto flex space-x-2">
+      {/* Filter button */}
       <Button
         className="self-center sm:hidden"
         size={"xs"}
@@ -26,6 +29,8 @@ export const TradeFilters = () => {
       >
         <Filter className="w-3" />
       </Button>
+
+      {/* Grid/List view toggle button */}
       <Button
         onClick={toggleGrid}
         className="self-center"
@@ -38,6 +43,8 @@ export const TradeFilters = () => {
           <List className="w-4 self-center" />
         )}
       </Button>
+
+      {/* Dropdown menu for sort direction */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button size={"xs"} variant={"default"}>
@@ -58,6 +65,8 @@ export const TradeFilters = () => {
           })}
         </DropdownMenuContent>
       </DropdownMenu>
+
+      {/* Dropdown menu for sort options */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button size={"xs"} variant={"default"}>

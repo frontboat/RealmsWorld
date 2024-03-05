@@ -8,11 +8,13 @@ interface Props {
 
 export const CollectionCard = ({ collection }: Props) => {
   return (
+    // Link to the collection page
     <Link
-      href={`/collection/${collection.link ?? "realms"}`} //TODO make dynamic depending on collection url (currently not passed from reservoir collections query)
+      href={`/collection/${collection.link ?? "realms"}`} // Make the link dynamic depending on the collection URL (currently not passed from reservoir collections query)
       className="group flex border-2 bg-dark-green p-5 duration-300 hover:border-bright-yellow hover:bg-medium-dark-green hover:opacity-80"
     >
       {collection.image && (
+        // Display the collection image
         <Image
           src={collection.image}
           alt={collection.name}
@@ -22,9 +24,11 @@ export const CollectionCard = ({ collection }: Props) => {
         />
       )}
       <div className="flex flex-grow justify-between pl-4">
+        {/* Display the collection name */}
         <h5 className="self-center">{collection.name}</h5>
       </div>
       <div className="self-center">
+        {/* Display the collection floor ask price */}
         {collection.floorAsk?.price?.amount.native}{" "}
         {collection.floorAsk?.price?.currency.symbol}
       </div>

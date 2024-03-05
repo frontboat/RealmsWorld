@@ -16,8 +16,7 @@ import { L1TokenTable } from "./L1TokenTable";
 import L2ERC721Table from "./L2ERC721Table";
 import { TradeLayout } from "./Trade";
 
-//export const runtime = "edge";
-
+// Generate metadata for the page
 export async function generateMetadata({
   params,
 }: {
@@ -31,11 +30,12 @@ export async function generateMetadata({
       images: `https://realms.world/collections/${collection}.png`,
     },
     twitter: {
-      images: [`https://realms.world/collections/${collection}.png`], // Must be an absolute URL
+      images: [`https://realms.world/collections/${collection}.png`],
     },
   };
 }
 
+// Page component
 export default async function Page({
   params,
   searchParams,
@@ -47,21 +47,19 @@ export default async function Page({
 }) {
   const tokenAddresses = getCollectionAddresses(params.id);
 
+  // If token addresses are not found, display "Collection Not Found"
   if (!tokenAddresses) {
     return <div>Collection Not Found</div>;
   }
-  /* isSepoliaGoldenToken =
-    NETWORK_NAME == "SEPOLIA" &&
-    (tokenAddresses.L2 ?? params.id == "goldenToken");
 
-  if (isSepoliaGoldenToken) {
-    return <Mint contractId={params.id} />;
-  }*/
+  // If token addresses for L2 chain are found, render L2TokenData component
   if (tokenAddresses[SUPPORTED_L2_CHAIN_ID]) {
     return (
       <L2TokenData tokenAddress={tokenAddresses[SUPPORTED_L2_CHAIN_ID]!} />
     );
   }
+
+  // If token addresses for L1 chain are found, render L1TokenData component
   if (tokenAddresses[SUPPORTED_L1_CHAIN_ID]) {
     return (
       <L1TokenData
@@ -72,6 +70,7 @@ export default async function Page({
   }
 }
 
+// Component for L2 token data
 const L2TokenData = async ({ tokenAddress }: { tokenAddress: string }) => {
   const erc721Attributes = api.erc721Attributes.all({
     contractAddress: tokenAddress,
@@ -89,6 +88,7 @@ const L2TokenData = async ({ tokenAddress }: { tokenAddress: string }) => {
   );
 };
 
+// Component for L1 token data
 const L1TokenData = async ({
   tokenAddress,
   searchParams,
@@ -106,14 +106,17 @@ const L1TokenData = async ({
   const attributesData = getAttributes({
     collection: tokenAddress,
   });
+
   const [{ tokens }, { attributes }] = await Promise.all([
     tokensData,
     attributesData,
   ]);
 
+  // If tokens are not found, display "Collection Not Found"
   if (!tokens) {
     return <div>Collection Not Found</div>;
   }
+
   return (
     <TradeLayout tokenAddress={tokenAddress} attributes={attributes}>
       <L1TokenTable address={tokenAddress} tokens={tokens} />

@@ -26,17 +26,22 @@ import { Button, Input } from "@realms-world/ui";
 
 // MAINNET TODO: UPDATE PRICE
 
+// Cost of minting a token
 const MINT_COST =
   process.env.NEXT_PUBLIC_IS_TESTNET == "true" ? 99000 : 90000000000000000;
 
 export default function Mint() {
   const { account } = useAccount();
 
+  // Get the token address for the specified collection
   const tokenAddress = getCollectionAddresses(Collections.GOLDEN_TOKEN)[
     SUPPORTED_L2_CHAIN_ID
   ];
+
+  // State for the quantity of tokens to mint
   const [mintQty, setMintQty] = useState(1);
 
+  // Generate the calls array for minting tokens
   const calls = useMemo(() => {
     const tx = {
       contractAddress: tokenAddress as `0x${string}`,
@@ -47,6 +52,7 @@ export default function Mint() {
     return Array(mintQty).fill(tx);
   }, [mintQty, tokenAddress]);
 
+  // Perform contract write operation to approve and mint tokens
   const {
     data: mintData,
     write,
@@ -60,17 +66,20 @@ export default function Mint() {
         entrypoint: "approve",
         calldata: [tokenAddress as `0x${string}`, MINT_COST * mintQty, 0],
       },
-
       ...calls,
     ],
   });
+
+  // Wait for the transaction to be confirmed
   const {
     data: submittedData,
     isLoading: isTxLoading,
     error,
   } = useWaitForTransaction({ hash: mintData?.transaction_hash });
 
+  // Check if the transaction is still loading
   const isLoading = isTxSubmitting || (mintData && isTxLoading);
+
   return (
     <div className="mx-auto mt-12 sm:mt-36 md:w-[750px]">
       <div className="w-full rounded-xl border bg-dark-green sm:flex">
@@ -86,6 +95,7 @@ export default function Mint() {
           <p className="mb-8">One free game, every day, forever</p>
 
           {account ? (
+            // Render input and button for minting tokens
             <div className="flex items-center">
               <Input
                 className="mr-4 !h-[44px] w-14"
@@ -106,6 +116,7 @@ export default function Mint() {
               {formatEther(BigInt(MINT_COST * mintQty))} Eth
             </div>
           ) : (
+            // Render login button for users who are not logged in
             <StarknetLoginButton />
           )}
         </div>
@@ -116,6 +127,7 @@ export default function Mint() {
             You have minted Golden Token #
             {/* @ts-expect-error starknet-react types return */}
             {submittedData?.events[1].data ? (
+              // Render token ID and link to transaction explorer
               <>
                 {uint256
                   .uint256ToBN({
@@ -135,6 +147,7 @@ export default function Mint() {
                 </Button>
               </>
             ) : (
+              // Render loading spinner while waiting for token ID
               <Loader2 className="ml-2 h-8 w-8 animate-spin" />
             )}
           </h1>

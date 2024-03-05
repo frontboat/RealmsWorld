@@ -9,8 +9,10 @@ interface GameCardProps {
 }
 
 export const GameCard = async ({ game }: GameCardProps) => {
+  // Get the path to the game's icon PNG
   const gameIconPng = `/games/${game.id}/icon.png`;
 
+  // Check if the image exists
   const isImageFound = async (imageName: string) => {
     return await fetch(
       (process.env.VERCEL_URL
@@ -21,8 +23,11 @@ export const GameCard = async ({ game }: GameCardProps) => {
       },
     );
   };
+
   let imageName;
   const result = await isImageFound(gameIconPng);
+
+  // Set the image name based on whether the PNG icon exists or not
   if (result.status === 200) {
     imageName = gameIconPng;
   } else {
@@ -31,8 +36,8 @@ export const GameCard = async ({ game }: GameCardProps) => {
 
   return (
     <Link
-      className="group relative flex h-80 flex-col items-center justify-center border text-center shadow-xl  duration-300 hover:opacity-80"
-      href={`/games/${game.id}`} // navigate to a custom game homepage if one is specified, default page otherwise
+      className="group relative flex h-80 flex-col items-center justify-center border text-center shadow-xl duration-300 hover:opacity-80"
+      href={`/games/${game.id}`} // Navigate to a custom game homepage if one is specified, default page otherwise
     >
       <Image
         src={`/games/${game.id}/cover.webp`}
@@ -41,7 +46,7 @@ export const GameCard = async ({ game }: GameCardProps) => {
         height={400}
         className="absolute bottom-0 top-0 h-full w-full object-fill brightness-75 transition-all duration-300 hover:filter-none"
       />
-      <div className="relative flex h-full max-w-full flex-col items-center justify-center  object-contain">
+      <div className="relative flex h-full max-w-full flex-col items-center justify-center object-contain">
         <Image
           src={imageName}
           alt={game.name}
@@ -49,7 +54,7 @@ export const GameCard = async ({ game }: GameCardProps) => {
           height={150}
           className="max-h-[180px] w-auto max-w-[75%] object-contain"
         />
-        <p className="mt-2  text-lg font-semibold">{game.description}</p>
+        <p className="mt-2 text-lg font-semibold">{game.description}</p>
       </div>
       <div className="invisible z-10 opacity-0 duration-300 group-hover:visible group-hover:-translate-y-3 group-hover:opacity-100">
         <Button variant={"default"}>Explore</Button>

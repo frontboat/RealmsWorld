@@ -20,6 +20,7 @@ import {
   ScrollArea,
 } from "@realms-world/ui";
 
+// Dropdown component for displaying attributes
 export const AttributesDropdown = ({
   address,
   attributes,
@@ -29,7 +30,10 @@ export const AttributesDropdown = ({
   attributes?: Awaited<ReturnType<typeof getAttributes>>["attributes"];
   attributesPromise?: Promise<RouterOutputs["erc721Attributes"]["all"]>;
 }) => {
+  // Query related hooks
   const { handleAttributeClick, isAttributeInQuery, isKeyInQuery } = useQuery();
+
+  // Fetch attributes using trpc query
   const { data: attributesFetched } = api.erc721Attributes.all.useQuery(
     {
       contractAddress: address,
@@ -39,11 +43,15 @@ export const AttributesDropdown = ({
       enabled: attributesPromise ? true : false,
     },
   );
+
+  // Determine the final attributes to display
   const finalAttributes = attributesFetched?.items ?? attributes;
 
+  // If there are no attributes, return null
   if (!finalAttributes?.length) {
     return null;
   }
+
   return (
     <div
       className={` ${"hidden"} w-screen overscroll-y-none pr-6 sm:block sm:w-24 sm:flex-none sm:overscroll-auto lg:w-72`}
@@ -58,7 +66,10 @@ export const AttributesDropdown = ({
               <Accordion key={index} type="single" collapsible>
                 <AccordionItem value="item-1">
                   <AccordionTrigger className="bg-primary px-2 text-sm">
-                    {attribute.key} ({Array.isArray(attribute.values) && attribute.values.length})
+                    {/* Display attribute key and value count */}
+                    {attribute.key} (
+                    {Array.isArray(attribute.values) && attribute.values.length}
+                    )
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="pt-1">
@@ -84,6 +95,7 @@ export const AttributesDropdown = ({
                                 }
                                 className="font-body my-1 mr-1"
                               >
+                                {/* Display attribute value and token count */}
                                 {a.value} ({a.tokenCount})
                               </Button>
                             );

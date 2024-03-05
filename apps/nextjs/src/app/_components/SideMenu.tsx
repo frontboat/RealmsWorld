@@ -19,12 +19,13 @@ import { Button, ScrollArea } from "@realms-world/ui";
 import { useUIContext } from "../providers/UIProvider";
 import { WalletSheet } from "./wallet/WalletSheet";
 
+// Sidebar component
 const Sidebar = () => {
   const { isSidebarOpen, toggleSidebar } = useUIContext();
-
   const { lordsPrice } = useLordsPrice();
-
   const router = useRouter();
+
+  // Menu items
   const menu = [
     {
       name: "Games",
@@ -48,6 +49,7 @@ const Sidebar = () => {
     },
   ];
 
+  // Social links
   const social = [
     {
       name: "Discord",
@@ -66,6 +68,7 @@ const Sidebar = () => {
     },
   ];
 
+  // Handle click event
   const handleClick = (href: string) => {
     router.push(href);
   };
@@ -76,9 +79,12 @@ const Sidebar = () => {
         isSidebarOpen ? "bg-dark-green" : "hidden"
       } z-100 group fixed bottom-0 top-0 z-20 h-screen w-screen flex-col border-r-[3px] bg-dark-green transition-all duration-500 md:flex md:w-[102px] md:hover:w-60`}
     >
+      {/* Side header image */}
       <div className="absolute mx-4">
         <SideHeaderImg className="w-full opacity-0 group-hover:opacity-100" />
       </div>
+
+      {/* Logo */}
       <Link
         className="absolute z-20 mx-auto flex w-full justify-center p-4 font-sans-serif text-xl font-semibold group-hover:pt-2.5 sm:text-2xl "
         href="/"
@@ -87,11 +93,14 @@ const Sidebar = () => {
         <Crown className="absolute w-14 group-hover:opacity-0" />
         <RWLogo className="absolute w-[152px] fill-white opacity-0 transition-all duration-500 group-hover:opacity-100" />
       </Link>
+
       <div className="mt-16 h-full w-full border-t-[3px] pb-3">
         <div className="relative z-10 m-2 mt-0 h-full border-[3px] border-t-0 border-solid border-transparent group-hover:!border-medium-dark-green">
           <div className="relative flex h-full flex-col items-center">
+            {/* Scrollable area */}
             <ScrollArea className="w-full">
               <div className="relative z-[2] inline-flex w-full flex-[0_0_auto] flex-col items-start justify-center gap-[17px] px-4 md:mb-6 md:mt-10">
+                {/* Menu items */}
                 {menu.map((item, index) => {
                   return (
                     <Button
@@ -104,7 +113,6 @@ const Sidebar = () => {
                       }}
                     >
                       <span className="absolute">{item.icon}</span>
-
                       <span className="visible absolute pl-9 opacity-100 transition-opacity group-hover:visible group-hover:flex group-hover:opacity-100 group-hover:delay-150 group-hover:duration-500 sm:opacity-0 ">
                         {item.name}
                       </span>
@@ -117,11 +125,14 @@ const Sidebar = () => {
             <div className="w-full px-2">
               <hr className="mb-4 border-b-[3px]" />
             </div>
+
+            {/* Lords price */}
             <div className="mt-3 font-sans">
               <LordsIcon className="mx-auto h-6 w-6 fill-bright-yellow pb-1" />
               {lordsPrice}
             </div>
 
+            {/* Social links */}
             <div className=" flex flex-col space-y-2 sm:mt-auto">
               {social.map((item, index) => {
                 return (
@@ -136,9 +147,12 @@ const Sidebar = () => {
                 );
               })}
             </div>
+
             <div className="my-4 w-full px-2">
               <hr className="border-b-[3px]" />
             </div>
+
+            {/* Wallet */}
             <div className="w-full content-center items-center px-2">
               <div className="absolute -ml-2 w-full text-center text-sm">
                 Connect Wallet

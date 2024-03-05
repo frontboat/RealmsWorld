@@ -12,6 +12,7 @@ import {
   TabsTrigger,
 } from "@realms-world/ui";
 
+// Generate metadata for the page
 export async function generateMetadata({
   params,
 }: {
@@ -23,6 +24,7 @@ export async function generateMetadata({
   };
 }
 
+// Page component
 export default async function Page({ params }: { params: { id: string } }) {
   const game = games.find((game) => game.id === params.id);
 
@@ -34,19 +36,22 @@ export default async function Page({ params }: { params: { id: string } }) {
     alt: `${game?.name} Screenshot ${index}`,
   }));*/ //TODO not working in Vercel production
 
+  // Create an array for the screenshot list
   const screenshotList = new Array(game?.screenshotLength);
+
+  // Create a list of screenshots with their source and alt attributes
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const list = [...screenshotList].map((image, index) => ({
     src: `/games/${params.id}/screenshots/${index + 1}.png`,
     alt: `${game?.name} Screenshot ${index + 1}`,
   }));
 
+  // Define tabs for the game details
   const tabs = [
     {
       name: "Details",
       content: <div className="text-xl leading-relaxed">{game?.longform}</div>,
     },
-
     {
       name: "Assets",
       content: (

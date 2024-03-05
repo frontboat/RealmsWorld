@@ -16,9 +16,12 @@ export const L1TokenTable = ({
 }) => {
   const { isGrid } = useUIContext();
 
+  // CSS classes for grid and list layouts
   const grid =
     "grid grid-cols-1 gap-4 sm:pl-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5";
   const list = "grid grid-cols-1 mx-4 border border-t-0";
+
+  // Get collection name from address
   const collectionName = getCollectionFromAddress(address);
 
   return (

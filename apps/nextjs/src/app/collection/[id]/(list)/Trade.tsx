@@ -7,6 +7,7 @@ import { TokenCardSkeleton } from "@/app/collection/TokenCardSkeleton";
 
 import type { RouterOutputs } from "@realms-world/api";
 
+// TradeLayout component
 export const TradeLayout = ({
   tokenAddress,
   attributes,
@@ -20,6 +21,7 @@ export const TradeLayout = ({
 }) => {
   return (
     <>
+      {/* TradeFilters */}
       <div className="mb-3 flex w-full justify-between">
         <TradeFilters />
       </div>
@@ -27,23 +29,28 @@ export const TradeLayout = ({
       <div className="flex w-full">
         {tokenAddress && (
           <>
+            {/* AttributesDropdown with attributes */}
             {attributes && (
               <AttributesDropdown
                 address={tokenAddress}
                 attributes={attributes}
               />
             )}
+            {/* AttributesDropdown with attributesPromise */}
             {attributesPromise && (
               <AttributesDropdown
                 address={tokenAddress}
                 attributesPromise={attributesPromise}
               />
             )}
+            {/* SweepButton */}
             {/*<SweepButton id={params.address} />*/}
             <div className="w-full">
+              {/* AttributeTags */}
               <AttributeTags />
               <Suspense
                 fallback={
+                  // TokenCardSkeleton
                   <div className="mt-6 grid grid-cols-1 gap-4 sm:pl-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
                     {Array.from({ length: 3 }).map((_, index) => (
                       <TokenCardSkeleton key={index} />

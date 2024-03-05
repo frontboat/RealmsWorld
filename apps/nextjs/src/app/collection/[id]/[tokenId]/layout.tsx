@@ -1,7 +1,8 @@
 import React from "react";
 
+// Root layout component
 export default function RootLayout({
-  children,
+  children, // The child components to be rendered inside the layout
 }: {
   children: React.ReactNode;
 }) {

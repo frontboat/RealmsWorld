@@ -19,10 +19,13 @@ export const L2ActivityTable = ({
 }) => {
   const ref = useRef(null);
 
+  // Extract the status from searchParams
   const statusArray =
     typeof searchParams.types === "string"
       ? [searchParams.types]
       : searchParams.types;
+
+  // Map the status to "filled" or "open"
   //@ts-expect-error works
   const status: ("filled" | "open")[] = statusArray?.map((status) => {
     switch (status) {
@@ -32,12 +35,16 @@ export const L2ActivityTable = ({
         return "open";
     }
   });
+
+  // Set up filters for the API query
   const filters: RouterInputs["erc721MarketEvents"]["all"] = {
     collectionId: MarketplaceCollectionIds[collectionId as Collections],
     orderBy: "timestamp",
     limit: 16,
   };
   if (statusArray) filters.status = status;
+
+  // Fetch erc721MarketEvents using trpc's useSuspenseInfiniteQuery
   const [erc721MarketEvents, { fetchNextPage, hasNextPage, isFetching }] =
     api.erc721MarketEvents.all.useSuspenseInfiniteQuery(filters, {
       getNextPageParam(lastPage) {
@@ -46,8 +53,10 @@ export const L2ActivityTable = ({
       refetchInterval: 0,
     });
 
+  // Check if the component is in view using useInView
   const isInView = useInView(ref, { once: false });
 
+  // Fetch next page when component is in view
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     if (isInView) fetchNextPage();
@@ -56,6 +65,7 @@ export const L2ActivityTable = ({
   return (
     <div className="w-full">
       <div id="activity-container" className="grid flex-grow grid-cols-1">
+        {/* Render L2ActivityCard for each activity */}
         {erc721MarketEvents
           ? erc721MarketEvents.pages?.map((page) =>
               page.items.map((activity, index: number) => {
@@ -63,6 +73,7 @@ export const L2ActivityTable = ({
               }),
             )
           : "Encountered a temporary error. Please refresh the page and retry."}
+        {/* Render loading placeholders */}
         {isFetching &&
           hasNextPage &&
           Array.from({ length: 3 }).map((_, index) => (

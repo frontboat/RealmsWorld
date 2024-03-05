@@ -12,30 +12,39 @@ import { getCollectionAddresses } from "@realms-world/constants";
 
 import L2CollectionSummary from "./L2CollectionSummary";
 
+// Component to display the summary of a collection
 export default async function CollectionSummary({
   collectionId,
 }: {
   collectionId: string;
 }) {
+  // Get the token addresses for the collection
   const tokenAddresses = getCollectionAddresses(collectionId);
+
+  // If token addresses are not found, display "Collection Not Found"
   if (!tokenAddresses) {
     return <div>Collection Not Found</div>;
   }
 
+  // If the collection is on L2 chain, render L2CollectionSummary component
   if (tokenAddresses[SUPPORTED_L2_CHAIN_ID]) {
     return <L2CollectionSummary collectionId={collectionId as Collections} />;
-  } else if (tokenAddresses[SUPPORTED_L1_CHAIN_ID]) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  }
+  // If the collection is on L1 chain
+  else if (tokenAddresses[SUPPORTED_L1_CHAIN_ID]) {
+    // Fetch the collection details from the contract
     const { collections }: { collections: Collection[] } = await getCollections(
       [{ contract: tokenAddresses[SUPPORTED_L1_CHAIN_ID]! }],
     );
 
     const collection = collections?.[0];
 
+    // If collection is not found, display "Collection Not Found"
     if (!collection) {
       return <div>Collection Not Found</div>;
     }
 
+    // Array of links to display
     const links = [
       {
         icon: <ExternalLink />,
@@ -52,6 +61,7 @@ export default async function CollectionSummary({
       { icon: <Globe />, value: collection.externalUrl },
     ];
 
+    // Array of statistics to display
     const statistics = [
       {
         value: collection.floorSale?.["1day"],
@@ -71,6 +81,7 @@ export default async function CollectionSummary({
       { value: collection.tokenCount, title: "Count" },
     ];
 
+    // Array of contract details to display
     const contract_details = [
       {
         title: "Type",
@@ -82,12 +93,8 @@ export default async function CollectionSummary({
       },
     ];
 
-    /*const comptatible_games = collection.id
-      ? getGamesByContract(games, collection.id)
-      : null;*/
-
     return (
-      <div className=" pt-10 sm:flex">
+      <div className="pt-10 sm:flex">
         <div className="flex-none self-center sm:pr-10">
           {collection.image && (
             <Image
@@ -122,23 +129,10 @@ export default async function CollectionSummary({
             })}
           </div>
           <h1>{collection.name}</h1>
-          {/* <div className="flex flex-wrap mb-4 sm:space-x-2">
-          {comptatible_games.map((game: any, index: any) => {
-            return (
-              <Button
-                key={index}
-                href={`/games/${game.id}`}
-                className="text-xs font-sans-serif"
-              >
-                {game.name}
-              </Button>
-            );
-          })}
-        </div> */}
           <div className="flex flex-wrap justify-start lg:space-x-2">
             {statistics.map((statistic, index) => {
               return (
-                <div key={index} className=" px-4 py-2  lg:px-5">
+                <div key={index} className="px-4 py-2 lg:px-5">
                   <div className="mb-1 text-xs text-white/40">
                     {statistic.title}
                   </div>
@@ -147,11 +141,6 @@ export default async function CollectionSummary({
               );
             })}
           </div>
-
-          {/* <p
-              dangerouslySetInnerHTML={{ __html: collection.description }}
-              className="hidden sm:block"
-            /> */}
         </div>
       </div>
     );

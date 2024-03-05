@@ -9,6 +9,7 @@ import { BuyModal } from "../../marketplace/buy/BuyModal";
 import { ListModal } from "../../marketplace/list/ListModal";
 import { ListingEditModal } from "../../marketplace/listEdit/ListingEditModal";
 
+// Component for rendering actions for a card
 export const CardAction = ({
   token,
 }: {
@@ -19,31 +20,31 @@ export const CardAction = ({
 
   return (
     <>
-      {listing &&
-        (token.owner !== padAddress(address?.toLowerCase()) ? (
-          <BuyModal
-            trigger={
-              <Button className="z-20 flex w-full" size={"lg"}>
-                Buy Now
-              </Button>
-            }
-            // tokenId={tokenId}
-            token={token}
-            collectionId={token.contract_address!}
-            orderId={0}
-          />
-        ) : (
-          <ListingEditModal
-            token={token}
-            //listingId={token?.id}
-            collectionId={"test"}
-            trigger={
-              <Button size={"lg"} className="w-full">
-                Edit Listing
-              </Button>
-            }
-          />
-        ))}
+      {/* Render BuyModal if the token is not owned by the current user */}
+      {listing && token.owner !== padAddress(address?.toLowerCase()) ? (
+        <BuyModal
+          trigger={
+            <Button className="z-20 flex w-full" size={"lg"}>
+              Buy Now
+            </Button>
+          }
+          token={token}
+          collectionId={token.contract_address!}
+          orderId={0}
+        />
+      ) : (
+        // Render ListingEditModal if the token is owned by the current user
+        <ListingEditModal
+          token={token}
+          collectionId={"test"}
+          trigger={
+            <Button size={"lg"} className="w-full">
+              Edit Listing
+            </Button>
+          }
+        />
+      )}
+      {/* Render ListModal if the token has no price and is owned by the current user */}
       {!token?.price && token.owner == padAddress(address?.toLowerCase()) && (
         <ListModal
           token={token}

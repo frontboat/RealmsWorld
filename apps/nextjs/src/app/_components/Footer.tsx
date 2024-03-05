@@ -1,15 +1,18 @@
 import Link from "next/link";
 
 export const Footer = () => {
-  /*const defaultImage = "/backgrounds/footer.webp";
+  // Default background image for the footer
+  const defaultImage = "/backgrounds/footer.webp";
 
+  // Style for the background image
   const backgroundImageStyle = {
     backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.1), rgba(42,43,36, 1)), url(${defaultImage})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
-  };*/
+  };
 
+  // Array of footer links
   const footerLinks = [
     {
       name: "Bibliotheca DAO",
@@ -37,6 +40,7 @@ export const Footer = () => {
         </div>
         <div className="mt-8">
           <ul>
+            {/* Render footer links */}
             {footerLinks.map((item, index) => (
               <li className="my-1 py-1 text-lg" key={index}>
                 <Link href={item.href}>{item.name}</Link>

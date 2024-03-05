@@ -12,6 +12,7 @@ export const TokenAttributes = ({
 }) => {
   return token.attributes.map((attributes, index) => {
     return (
+      // Link to the token's attribute page
       <Link
         href={`/collection/${token.contract}?${attributes.key}=${attributes.value}`}
         key={index}
@@ -26,6 +27,7 @@ export const TokenAttributes = ({
             <div className="ml-3">{attributes.floorAskPrice}</div>
           </div>
           {attributes.tokenCount && (
+            // Display token count and percentage
             <div className="w-full text-xs opacity-70">
               {attributes.tokenCount} (
               {(

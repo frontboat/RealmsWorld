@@ -1,6 +1,6 @@
+import type { Activity } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import type { Activity } from "@/types";
 import { shortenHex } from "@/utils/utils";
 
 interface ActivityCardProps {
@@ -8,14 +8,12 @@ interface ActivityCardProps {
 }
 
 export const ActivityCard = ({ activity }: ActivityCardProps) => {
-  // convert unix to time
+  // Convert unix timestamp to Date object
   const date = new Date(activity.timestamp * 1000);
 
+  // Calculate elapsed time since the activity
   function getElapsedTime() {
-    // get time difference from now
     const timeDiff = Math.abs(Date.now() - date.getTime());
-
-    // get time difference in various units
     const seconds = Math.floor(timeDiff / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
@@ -24,7 +22,6 @@ export const ActivityCard = ({ activity }: ActivityCardProps) => {
     const months = Math.floor(days / 30);
     const years = Math.floor(days / 365);
 
-    // return the most appropriate unit
     if (seconds < 60) return `${seconds} second${seconds === 1 ? "" : "s"} ago`;
     if (minutes < 60) return `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
     if (hours < 24) return `${hours} hour${hours === 1 ? "" : "s"} ago`;
@@ -34,12 +31,14 @@ export const ActivityCard = ({ activity }: ActivityCardProps) => {
     return `${years} year${years === 1 ? "" : "s"} ago`;
   }
 
+  // Get localized date string
   const getLocalizedDate = () => {
     return date.toLocaleString();
   };
 
   return (
-    <div className=" flex w-full flex-wrap border-b p-2">
+    <div className="flex w-full flex-wrap border-b p-2">
+      {/* Activity type and image */}
       <div className="flex w-full flex-wrap justify-start sm:w-5/12">
         <div className="mr-6 w-full flex-none self-center rounded px-4 py-1 font-semibold opacity-60 sm:w-32">
           {!activity.token.tokenName ? "collection offer" : activity.type}
@@ -70,6 +69,8 @@ export const ActivityCard = ({ activity }: ActivityCardProps) => {
           </Link>
         )}
       </div>
+
+      {/* To address */}
       <div className="w-1/2 sm:w-1/12">
         <span className="text-xs opacity-50">to:</span> <br />
         {activity.toAddress ? (
@@ -80,6 +81,8 @@ export const ActivityCard = ({ activity }: ActivityCardProps) => {
           "-"
         )}
       </div>
+
+      {/* From address */}
       <div className="w-1/2 sm:w-1/12">
         <span className="text-xs opacity-50">from:</span> <br />
         {activity.fromAddress ? (
@@ -90,8 +93,10 @@ export const ActivityCard = ({ activity }: ActivityCardProps) => {
           "-"
         )}
       </div>
+
+      {/* Price */}
       <div className="flex w-1/2 self-center font-semibold sm:w-2/12 sm:justify-end">
-        {activity.type != "transfer" &&
+        {activity.type !== "transfer" &&
           (activity.price?.currency ? (
             <div className="self-center">
               {activity.price?.amount.native} {activity.price?.currency.symbol}
@@ -100,6 +105,8 @@ export const ActivityCard = ({ activity }: ActivityCardProps) => {
             <div className="self-center">{activity.price || 0} ETH</div>
           ))}
       </div>
+
+      {/* Elapsed time and order image */}
       <div className="mt-2 flex w-1/2 justify-end sm:mt-0 sm:w-3/12">
         <div className="flex space-x-4 self-center px-4">
           <span

@@ -18,6 +18,7 @@ import { LoadingSkeleton } from "./loading";
 import { TokenContent } from "./TokenContent";
 import { TokenInformation } from "./TokenInformation";
 
+// Generate metadata for the page
 export async function generateMetadata({
   params: { tokenId, id },
 }: {
@@ -36,15 +37,20 @@ export async function generateMetadata({
   };
 }
 
+// Main page component
 export default async function Page({
   params,
 }: {
   params: { id: string; tokenId: string };
 }) {
   const tokenAddresses = getCollectionAddresses(params.id);
+
+  // If token addresses are not found, display "Collection Not Found"
   if (!tokenAddresses) {
     return <div>Collection Not Found</div>;
   }
+
+  // If token addresses for L2 chain are found, render L2TokenData component
   if (tokenAddresses[SUPPORTED_L2_CHAIN_ID]) {
     return (
       <Suspense fallback={<LoadingSkeleton />}>
@@ -55,7 +61,9 @@ export default async function Page({
         />
       </Suspense>
     );
-  } else if (tokenAddresses[SUPPORTED_L1_CHAIN_ID]) {
+  }
+  // If token addresses for L1 chain are found, render L1TokenData component
+  else if (tokenAddresses[SUPPORTED_L1_CHAIN_ID]) {
     return (
       <L1TokenData
         collectionId={params.id}
@@ -65,8 +73,11 @@ export default async function Page({
     );
   }
 
+  // If token addresses are not supported, display "Collection Not Supported"
   return <>Collection Not Supported</>;
 }
+
+// Component for L2 token data
 const L2TokenData = async ({
   contractAddress,
   tokenId,
@@ -90,13 +101,11 @@ const L2TokenData = async ({
           tokenId={erc721Token.token_id}
           owner={erc721Token.owner}
           attributes={erc721Token.attributes}
-          //collection={erc721Token}
           collectionId={collectionId}
         >
           <L2Token
             contractAddress={contractAddress}
             tokenId={tokenId}
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             token={JSON.parse(JSON.stringify(erc721Token))}
           />
         </TokenInformation>
@@ -105,6 +114,7 @@ const L2TokenData = async ({
   );
 };
 
+// Component for L1 token data
 const L1TokenData = async ({
   contractAddress,
   tokenId,
@@ -134,6 +144,7 @@ const L1TokenData = async ({
   const market = tokens?.[0]?.market;
   const collection = collections?.[0];
 
+  // If tokens are not found, display "Collection Not Found"
   if (!tokens) {
     return <div>Collection Not Found</div>;
   }

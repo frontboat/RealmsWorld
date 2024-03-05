@@ -15,47 +15,43 @@ export default function RootLayout({
   const imageUrl = params.id ? `/backgrounds/${params.id}.png` : defaultImage;
 
   const isMintable =
-    process.env.NEXT_PUBLIC_IS_TESTNET == "true" &&
-    params.id == (Collections.GOLDEN_TOKEN as string);
+    process.env.NEXT_PUBLIC_IS_TESTNET === "true" &&
+    params.id === (Collections.GOLDEN_TOKEN as string);
+
   const tabs = [
     {
       name: "Trade",
       link: "",
     },
   ];
+
   if (isMintable) {
     tabs.push({
       name: "Mint",
       link: "mint",
     });
   }
+
   tabs.push(
     { name: "Analytics", link: "analytics" },
-    {
-      name: "Activity",
-      link: "activity",
-    },
+    { name: "Activity", link: "activity" },
   );
 
   return (
     <div
       className="h-full w-full"
-      style={
-        {
-          "--image-url": imageUrl,
-        } as React.CSSProperties
-      }
+      style={{ "--image-url": imageUrl } as React.CSSProperties}
     >
       <div className="relative flex h-full lg:pl-32">
         <div className="flex-grow">
           <CollectionSummary collectionId={params.id} />
-          <div className="mb-3 flex gap-4 overflow-x-auto border-b py-1  ">
+          <div className="mb-3 flex gap-4 overflow-x-auto border-b py-1">
             {tabs.map((tab) => (
               <NavLink
                 key={tab.name}
-                variant={"link"}
+                variant="link"
                 className="hover:text-flamingo/70"
-                size={"sm"}
+                size="sm"
                 exact
                 href={`/collection/${params.id}${tab.link && "/" + tab.link}`}
               >
@@ -63,7 +59,7 @@ export default function RootLayout({
               </NavLink>
             ))}
           </div>
-          <div className="p-2 ">{children}</div>
+          <div className="p-2">{children}</div>
         </div>
       </div>
     </div>

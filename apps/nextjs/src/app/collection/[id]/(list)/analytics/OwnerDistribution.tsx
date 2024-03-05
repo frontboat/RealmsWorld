@@ -4,13 +4,13 @@ import type { paths } from "@reservoir0x/reservoir-sdk";
 
 import { Progress } from "@realms-world/ui";
 
-//import PieChart from "@/homepages/realms-eternum/components/PieChart";
-
+// Component to display owner distribution based on token ranges
 export const OwnerDistribution = ({
   ownersDistribution,
 }: {
   ownersDistribution: paths["/collections/{collection}/owners-distribution/v1"]["get"]["responses"]["200"]["schema"]["ownersDistribution"];
 }) => {
+  // Define token ranges
   const tokenRanges = [
     { min: 0, max: 1 },
     { min: 2, max: 3 },
@@ -20,11 +20,13 @@ export const OwnerDistribution = ({
     { min: 51, max: 100000 },
   ];
 
+  // Calculate total number of owners
   const totalOwners = ownersDistribution?.reduce(
     (sum, { ownerCount }) => sum + (ownerCount ?? 0),
     0,
   );
 
+  // Calculate owner counts for each token range
   const ownerCountsByTokenRange = tokenRanges.map(({ min, max }) =>
     ownersDistribution
       ?.filter(
@@ -41,6 +43,7 @@ export const OwnerDistribution = ({
         <span className="mb-2 text-sm">{totalOwners}</span>
       </div>
 
+      {/* Display owner distribution for each token range */}
       {ownerCountsByTokenRange.length &&
         ownerCountsByTokenRange.map((amount, index) => {
           if (amount && totalOwners) {

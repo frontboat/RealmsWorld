@@ -22,6 +22,7 @@ import TokenOwnerActions from "../../marketplace/TokenOwnerActions";
 import { L2ActivityCard } from "../(list)/activity/L2ActivityCard";
 import { ListingCard } from "../(list)/ListingCard";
 
+// Component to display information about an L2 token
 export const L2Token = ({
   contractAddress,
   tokenId,
@@ -39,17 +40,15 @@ export const L2Token = ({
   );
   const { address } = useAccount();
 
-  //if (isLoading) return <LoadingSkeleton />;
+  // Check if the token information is still loading
   if (!erc721Token) return <div>Token Information Loading</div>;
 
+  // Filter active listings created by the token owner
   const activeListings = erc721Token.listings?.filter(
-    (
-      listing: NonNullable<
-        RouterOutputs["erc721Tokens"]["byId"]
-      >["listings"][number],
-    ) => listing.active && listing.created_by == erc721Token.owner,
+    (listing) => listing.active && listing.created_by === erc721Token.owner,
   );
 
+  // Find the listing with the lowest price
   const lowestPriceActiveListing = activeListings?.reduce(
     (minPriceListing, currentListing) =>
       (currentListing.price ?? 0) < (minPriceListing?.price ?? 0)
@@ -58,16 +57,20 @@ export const L2Token = ({
     activeListings[0],
   );
 
+  // Get the collection ID from the contract address
   const collectionId = getCollectionFromAddress(contractAddress);
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+
+  // Calculate the time difference between now and the listing expiration
   const expiryDiff = useTimeDiff(lowestPriceActiveListing?.expiration ?? 0);
 
+  // Convert the price to a BigInt if it exists
   const price = lowestPriceActiveListing?.price
     ? BigInt(parseInt(lowestPriceActiveListing?.price || "0")).toString()
     : null;
 
   return (
     <>
+      {/* Display the listing expiration time */}
       {lowestPriceActiveListing?.expiration && (
         <div className="my-2 flex items-center  py-4 text-xs opacity-60">
           <Clock className="mr-2 w-6" />
@@ -76,6 +79,7 @@ export const L2Token = ({
       )}
       <div className="mt-4 flex flex-wrap items-center justify-between border bg-dark-green p-4">
         <div className="flex flex-wrap gap-x-2 text-lg">
+          {/* Display the price if it exists */}
           {price ? (
             <>
               {price && (
@@ -90,10 +94,12 @@ export const L2Token = ({
           ) : (
             "Not listed"
           )}{" "}
-          {erc721Token.owner == padAddress(address) ? (
+          {/* Display token owner actions if the current user is the token owner */}
+          {erc721Token.owner === padAddress(address) ? (
             <TokenOwnerActions token={token} />
           ) : (
             <div>
+              {/* Display the buy modal if there is a lowest price active listing */}
               {lowestPriceActiveListing && (
                 <BuyModal
                   trigger={
@@ -101,7 +107,6 @@ export const L2Token = ({
                       Buy Now
                     </Button>
                   }
-                  // tokenId={tokenId}
                   token={token}
                   collectionId={collectionId}
                   orderId={0}
@@ -120,6 +125,7 @@ export const L2Token = ({
           <div className="mt-4 border bg-dark-green px-4">
             <AccordionTrigger className="text-lg">Listings</AccordionTrigger>
             <AccordionContent className="-mt-4 w-full flex-wrap gap-x-2">
+              {/* Display active listings */}
               {activeListings.length
                 ? activeListings.map((listing, index) => {
                     return (
@@ -140,6 +146,7 @@ export const L2Token = ({
               Token Activity
             </AccordionTrigger>
             <AccordionContent className="-mt-4 w-full flex-wrap gap-x-2">
+              {/* Display token activity */}
               {erc721Token.listings.map((listing, index) => {
                 return <L2ActivityCard key={index} activity={listing} />;
               })}

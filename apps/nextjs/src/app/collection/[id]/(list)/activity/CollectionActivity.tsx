@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Switch } from "@realms-world/ui";
 
+// Component for displaying collection activity
 export const CollectionActivity = ({
   searchAttributes = ["sale", "transfer", "bid", "ask"],
 }: {
@@ -21,6 +22,7 @@ export const CollectionActivity = ({
   });
   const [loading, setLoading] = useState(false);
 
+  // Handle switch change event
   const handleSwitchChange = (value: string) => {
     setLoading(true);
     document
@@ -40,7 +42,7 @@ export const CollectionActivity = ({
       params.delete("types");
       for (const type of types) params.append("types", type);
     }
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    // Update URL with new params
     router.replace(`${pathname}?${params}`);
   };
 
@@ -56,7 +58,6 @@ export const CollectionActivity = ({
       .getElementById("activity-container")
       ?.classList.remove("opacity-30", "pointer-events-none");
     setLoading(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   return (
@@ -80,6 +81,7 @@ export const CollectionActivity = ({
   );
 };
 
+// Component for displaying collection activity skeleton
 export const CollectionActivitySkeleton = () => {
   return (
     <div className="hidden w-72 flex-col space-y-3 pr-8 sm:flex">

@@ -1,13 +1,11 @@
 import type { TokenMarketData } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-
 import { formatEther } from "viem";
 
 import { Button } from "@realms-world/ui";
 
 import { BuyButton } from "../../reservoir/BuyModal";
-//import { BuyButton } from "./BuyModal";
 
 interface TokenCardProps {
   token: TokenMarketData;
@@ -18,11 +16,11 @@ interface TokenCardProps {
 export const L1TokenCard = (props: TokenCardProps) => {
   const { token, layout, collectionName } = props;
 
-  const isGrid = layout == "grid";
+  const isGrid = layout === "grid";
 
+  // CSS classes for grid and list layouts
   const grid =
     "bg-dark-green duration-300 transform border hover:-translate-y-1";
-
   const list =
     "bg-dark-green duration-300 transform border-t hover:-translate-y-1 flex w-full";
 
@@ -30,6 +28,7 @@ export const L1TokenCard = (props: TokenCardProps) => {
 
   return (
     <div className={layout === "grid" ? grid : list}>
+      {/* Link to token details */}
       <Link href={`/collection/${collectionName}/${token.token.tokenId}`}>
         <Image
           src={token.token.image || ""}
@@ -39,10 +38,14 @@ export const L1TokenCard = (props: TokenCardProps) => {
           height={imageSize}
         />
       </Link>
+
       {isGrid ? (
+        // Grid layout
         <div className={`w-full px-3 pb-2 pt-4`}>
           <div className="flex w-full justify-between text-sm">
+            {/* Token ID */}
             <span className="font-semibold">#{token.token.tokenId} </span>
+            {/* Floor Ask Source Icon */}
             {token.market.floorAsk.source?.icon && (
               <Image
                 src={token.market.floorAsk.source.icon}
@@ -53,9 +56,11 @@ export const L1TokenCard = (props: TokenCardProps) => {
               />
             )}
           </div>
+          {/* Token Name */}
           <h6>{token.token.name}</h6>
 
           <div className="my-3 h-6 text-sm">
+            {/* Floor Ask Price */}
             {token.market.floorAsk.price &&
               formatEther(
                 BigInt(token.market.floorAsk.price.amount.raw),
@@ -63,6 +68,7 @@ export const L1TokenCard = (props: TokenCardProps) => {
           </div>
 
           <div className="flex justify-between space-x-2">
+            {/* View Button */}
             <Button
               href={`/collection/${collectionName}/${token.token.tokenId}`}
               variant={"ghost"}
@@ -71,6 +77,7 @@ export const L1TokenCard = (props: TokenCardProps) => {
             >
               view
             </Button>
+            {/* Buy Button */}
             {token.market.floorAsk.id && (
               <BuyButton
                 size="xs"
@@ -81,13 +88,17 @@ export const L1TokenCard = (props: TokenCardProps) => {
           </div>
         </div>
       ) : (
+        // List layout
         <div className={`flex w-full justify-between px-3`}>
           <div className="flex w-full">
             <div className="self-center">
+              {/* Token ID */}
               <div className="text-sm">#{token.token.tokenId} </div>
+              {/* Token Name */}
               <div className="self-center">{token.token.name}</div>
             </div>
 
+            {/* Floor Ask Price */}
             <h6 className="ml-auto self-center">
               {token.market.floorAsk.price
                 ? formatEther(
@@ -97,6 +108,7 @@ export const L1TokenCard = (props: TokenCardProps) => {
               ETH
             </h6>
             <div className="justify-between self-center px-3 text-sm">
+              {/* Floor Ask Source Icon */}
               {token.market.floorAsk.source.icon && (
                 <Image
                   src={token.market.floorAsk.source.icon}
@@ -110,21 +122,22 @@ export const L1TokenCard = (props: TokenCardProps) => {
           </div>
 
           <div className="flex justify-between space-x-2 self-center">
+            {/* View Button */}
             <Button
-              href={`/collection/${collectionName ?? token.token.contract}/${
-                token.token.tokenId
-              }`}
+              href={`/collection/${collectionName ?? token.token.contract}/${token.token.tokenId}`}
               variant={"outline"}
               className="w-full"
             >
               view
             </Button>
+            {/* Buy Button */}
             {
-            <BuyButton
-              size='default'
-              address={token.token.contract}
-              id={token.token.tokenId}
-            />}
+              <BuyButton
+                size="default"
+                address={token.token.contract}
+                id={token.token.tokenId}
+              />
+            }
           </div>
         </div>
       )}

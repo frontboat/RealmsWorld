@@ -10,6 +10,7 @@ import { Button } from "@realms-world/ui";
 
 import { CardAction } from "./CardAction";
 
+// Component for rendering an L2ERC721Card
 export const L2ERC721Card = ({
   token,
   layout = "grid",
@@ -70,6 +71,7 @@ export const L2ERC721Card = ({
   );
 };
 
+// Component for rendering token details based on layout type
 const TokenDetails = ({
   token,
   isGrid,
@@ -85,6 +87,7 @@ const TokenDetails = ({
     <ListDetails token={token} address={address} />
   );
 
+// Component for rendering token attributes in a table
 const TokenAttributes = ({
   token,
   attributeKeys,
@@ -107,6 +110,7 @@ const TokenAttributes = ({
   </table>
 );
 
+// Component for rendering token details in grid layout
 const GridDetails = ({
   token,
 }: {
@@ -130,6 +134,7 @@ const GridDetails = ({
   </div>
 );
 
+// Component for rendering token price
 const Price = ({
   token,
 }: {
@@ -152,6 +157,7 @@ const Price = ({
   );
 };
 
+// Component for rendering token details in list layout
 const ListDetails = ({
   token,
   address,

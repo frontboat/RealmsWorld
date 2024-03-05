@@ -10,6 +10,7 @@ import { Button } from "@realms-world/ui";
 import { ContractImage } from "./ContractImage";
 import { TokenAttribute } from "./TokenAttribute";
 
+// Component to display token information
 export const TokenInformation = ({
   children,
   collection,
@@ -33,6 +34,7 @@ export const TokenInformation = ({
 }) => {
   return (
     <>
+      {/* Token image */}
       <div className="flex w-full flex-none flex-col md:w-1/3">
         {image ? (
           <Image
@@ -45,6 +47,7 @@ export const TokenInformation = ({
         ) : (
           <ContractImage tokenId={tokenId} collectionId={collectionId} />
         )}
+        {/* Token attributes */}
         {attributes?.length ? (
           <div className="my-4 grid grid-cols-3 gap-4">
             {attributes.map((attribute, index) => {
@@ -85,8 +88,10 @@ export const TokenInformation = ({
           ""
         )}
       </div>
+      {/* Token details */}
       <div className="my-1 w-full px-4 md:w-2/3 md:px-4">
         <div className="mb-8 flex justify-between">
+          {/* Back button */}
           <Button
             size={"sm"}
             variant={"default"}
@@ -97,12 +102,15 @@ export const TokenInformation = ({
               {erc721Tokens[collectionId as keyof typeof erc721Tokens]?.name}
             </span>
           </Button>
+          {/* Token ID */}
           <div className="flex space-x-4 text-lg">
             <span>#{tokenId}</span>
           </div>
         </div>
 
+        {/* Token name */}
         <h1 className="mb-8">{decodeURIComponent(name ?? "")}</h1>
+        {/* Token owner */}
         {owner && (
           <div className="flex space-x-6 text-lg">
             <div className="self-center">Owner </div>

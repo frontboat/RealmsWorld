@@ -1,24 +1,30 @@
 export default function Loading() {
-  // You can add any UI inside Loading, including a Skeleton.
+  // Renders the loading skeleton UI
   return <LoadingSkeleton />;
 }
 
 export const LoadingSkeleton = () => {
+  // Container for the loading skeleton
   return (
     <div className="container mx-auto flex h-[592px] flex-wrap px-4 sm:px-8">
-      <div className="w-full flex-none  p-2 md:w-1/3">
-        <div className=" mx-auto h-96 w-full bg-bright-yellow " />
-        {/* <div className="flex flex-wrap">
+      <div className="w-full flex-none p-2 md:w-1/3">
+        {/* Placeholder for an image */}
+        <div className="mx-auto h-96 w-full bg-bright-yellow" />
+        {/* Placeholder for multiple items */}
+        {/* 
+        <div className="flex flex-wrap">
           {new Array(6).fill(0).map((index) => (
-            <div key={index} className="w-1/2 ">
-              <div className="h-24 animate-pulse  bg-bright-yellow p-4" />
+            <div key={index} className="w-1/2">
+              <div className="h-24 animate-pulse bg-bright-yellow p-4" />
             </div>
           ))}
         </div> */}
       </div>
       <div className="w-auto px-4 md:w-2/3 md:px-8">
+        {/* Placeholder for a small loading element */}
         <div className="my-8 h-12 w-56 animate-pulse bg-bright-yellow" />
         <div className="flex space-x-4">
+          {/* Placeholder for a small loading element */}
           <div className="h-6 w-16 animate-pulse bg-bright-yellow" />
         </div>
       </div>

@@ -13,6 +13,7 @@ import {
 } from "@realms-world/constants";
 import { Button } from "@realms-world/ui";
 
+// Renders the summary of an L2 collection
 export default async function L2CollectionSummary({
   collectionId,
 }: {
@@ -20,10 +21,13 @@ export default async function L2CollectionSummary({
 }) {
   const tokenAddresses = getCollectionAddresses(collectionId);
   console.log(tokenAddresses[SUPPORTED_L2_CHAIN_ID]!);
+
+  // Fetches the ERC721 collection details
   const erc721Collection = await api.erc721Collections.byId({
     id: tokenAddresses[SUPPORTED_L2_CHAIN_ID]!,
   });
 
+  // Contract details for the collection
   const contract_details: ContractDetails[] = [
     {
       title: "Type",
@@ -35,30 +39,19 @@ export default async function L2CollectionSummary({
     },
   ];
 
+  // Statistics for the collection
   const statistics = [
-    /* {
-      value: collection.floorSale?.["1day"],
-      title: "Top Offer",
-    },
-    {
-      value:
-        collection.floorAsk?.price?.amount?.raw &&
-        formatEther(BigInt(collection?.floorAsk?.price?.amount?.raw)),
-      title: "Floor",
-    },*/
-    //{ value: collection.onSaleCount, title: "Listed" },
     {
       value: erc721Collection?.[0]?.volume,
       title: "Total Volume",
       icon: <LordsIcon className="w-5 fill-current" />,
     },
-    //{ value: collection.tokenCount, title: "Count" },
   ];
+
   const marketplaceId = erc721Collection?.[0]?.marketplaceId?.toString();
-  const compatibleGames = marketplaceId ? getGamesByContract(
-    games,
-   marketplaceId
-  ) : [];
+  const compatibleGames = marketplaceId
+    ? getGamesByContract(games, marketplaceId)
+    : [];
 
   return (
     <div className="px-4 sm:mt-10 sm:flex">
@@ -97,6 +90,7 @@ export default async function L2CollectionSummary({
   );
 }
 
+// Renders a box with details of a collection
 export const DetailsBox = ({ description }: { description: string }) => {
   return (
     <div
@@ -106,6 +100,7 @@ export const DetailsBox = ({ description }: { description: string }) => {
   );
 };
 
+// Renders a box with statistics of a collection
 export const StatisticsBox = ({
   title,
   value,
@@ -134,6 +129,7 @@ export const StatisticsBox = ({
   );
 };
 
+// Renders a list of contract details
 export const ContractDetailsList = ({
   contract_details,
 }: {
@@ -152,6 +148,7 @@ export const ContractDetailsList = ({
   );
 };
 
+// Renders a list of compatible games
 export const CompatibleGames = ({ games }: { games: Game[] }) => {
   return (
     <div className="mb-4 flex flex-wrap sm:space-x-2">

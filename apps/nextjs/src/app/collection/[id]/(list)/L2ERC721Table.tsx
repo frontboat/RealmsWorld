@@ -12,7 +12,7 @@ import type { RouterInputs } from "@realms-world/api";
 import { TokenCardSkeleton } from "../../TokenCardSkeleton";
 import { L2ERC721Card } from "./L2ERC721Card";
 
-//import { SweepModal } from '@reservoir0x/reservoir-kit-ui'
+// L2ERC721Table component
 const L2ERC721Table = ({
   contractAddress,
   ownerAddress,
@@ -20,24 +20,32 @@ const L2ERC721Table = ({
   contractAddress: string;
   ownerAddress?: string;
 }) => {
+  // Get UI context
   const { isGrid } = useUIContext();
+
+  // Grid and list styles
   const grid =
     "grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5";
   const list = "grid grid-cols-1 w-full";
 
+  // Ref for in-view detection
   const ref = useRef(null);
 
+  // Get search params
   const searchParams = useSearchParams();
 
+  // Get sort direction and sort by from search params
   const sortDirection = searchParams.get("sortDirection");
   const sortBy = searchParams.get("sortBy");
 
+  // Convert search params to attribute filter object
   const attributesObject: Record<string, string> = {};
   for (const [key, value] of searchParams.entries()) {
     attributesObject[key] = value;
   }
   const attributeFilter = cleanQuery(attributesObject);
 
+  // Set filters for API query
   const filters: RouterInputs["erc721Tokens"]["all"] = {
     limit: 24,
     contractAddress,
@@ -46,10 +54,12 @@ const L2ERC721Table = ({
     orderBy: sortBy,
   };
 
+  // Add owner filter if ownerAddress is provided
   if (ownerAddress) {
     filters.owner = ownerAddress;
   }
 
+  // Fetch ERC721 tokens using trpc
   const [erc721Tokens, { fetchNextPage, hasNextPage, isFetching }] =
     api.erc721Tokens.all.useSuspenseInfiniteQuery(filters, {
       getNextPageParam(lastPage) {
@@ -58,8 +68,10 @@ const L2ERC721Table = ({
       refetchInterval: 15000,
     });
 
+  // Check if component is in view
   const isInView = useInView(ref, { once: false });
 
+  // Fetch next page when component is in view
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     if (isInView) fetchNextPage();
@@ -67,6 +79,7 @@ const L2ERC721Table = ({
 
   return (
     <>
+      {/* Render tokens */}
       <div className={isGrid ? grid : list}>
         {erc721Tokens.pages[0]?.items.length
           ? erc721Tokens?.pages?.map((page) =>
@@ -82,14 +95,18 @@ const L2ERC721Table = ({
             )
           : "No Assets Found"}
 
+        {/* Render token card skeletons while fetching */}
         {isFetching &&
           hasNextPage &&
           Array.from({ length: 3 }).map((_, index) => (
             <TokenCardSkeleton key={index} />
           ))}
       </div>
+
+      {/* In-view ref */}
       <div className="col-span-12 mt-6" ref={ref} />
     </>
   );
 };
+
 export default L2ERC721Table;

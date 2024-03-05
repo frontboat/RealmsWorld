@@ -5,10 +5,11 @@ import { ActivityCardSkeleton } from "./ActivityCardSkeleton";
 export default function Loading() {
   return (
     <div className="flex">
+      {/* Render the skeleton for the collection activity */}
       <CollectionActivitySkeleton />
 
       <div className="grid flex-grow grid-cols-1">
-        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment*/}
+        {/* Render the skeletons for the activity cards */}
         {[...Array(6)].map((_, i) => (
           <ActivityCardSkeleton key={i} />
         ))}

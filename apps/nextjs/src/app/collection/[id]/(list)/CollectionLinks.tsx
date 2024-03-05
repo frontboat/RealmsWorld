@@ -2,11 +2,13 @@ import Link from "next/link";
 import Discord from "@/icons/discord.svg";
 import { ExternalLink, Globe, X } from "lucide-react";
 
+// Interface for the links
 interface Links {
   icon: React.ReactNode;
   value: string;
 }
 
+// Component for rendering social links
 export const SocialLinks = ({ links }: { links: Links[] }) => {
   return (
     <div className="mx-auto flex justify-center space-x-2">
@@ -21,6 +23,7 @@ export const SocialLinks = ({ links }: { links: Links[] }) => {
   );
 };
 
+// Function for building the links
 export const BuildLinks = ({
   collectionAddress,
   discord,

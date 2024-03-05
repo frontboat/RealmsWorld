@@ -15,6 +15,7 @@ export const TopOwners = ({
 }) => {
   return (
     <div>
+      {/* Section: Owners */}
       <h4>Owners</h4>
       <div className="grid w-full grid-cols-5 text-sm uppercase">
         <div className="col-span-2">Wallet</div>
@@ -22,11 +23,14 @@ export const TopOwners = ({
         <div>On Sale</div>
         <div>% Owned</div>
       </div>
+      {/* Scrollable area */}
       <ScrollArea className="ScrollAreaRoot h-96">
         {owners?.owners?.map((owner) => (
           <div key={owner.address} className="grid grid-cols-5 py-1">
+            {/* Wallet address */}
             <div className="col-span-2">
               <Link href={`/user/${owner.address}`}>
+                {/* Display wallet name based on address */}
                 {owner.address === stakingAddresses[NETWORK_NAME].v1Galleon
                   ? "Galleon Staking"
                   : owner.address ===
@@ -35,8 +39,11 @@ export const TopOwners = ({
                     : shortenHex(owner.address ?? "", 8)}
               </Link>
             </div>
+            {/* Owned tokens */}
             <div>{owner.ownership?.tokenCount}</div>
+            {/* Tokens on sale */}
             <div>{owner.ownership?.onSaleCount}</div>
+            {/* Percentage owned */}
             <div>
               {(
                 (parseInt(owner.ownership?.tokenCount ?? "0") / 8000) *

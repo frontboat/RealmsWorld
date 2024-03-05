@@ -15,11 +15,15 @@ export default async function Page({
   params: { id: string };
   searchParams: { types?: string[] | string };
 }) {
+  // Get the token addresses for the collection
   const tokenAddresses = getCollectionAddresses(params.id);
+
+  // If token addresses are not found, display "Collection Not Found"
   if (!tokenAddresses) {
     return <div>Collection Not Found</div>;
   }
 
+  // Prepare the types for the query
   const types =
     typeof searchParams.types === "string"
       ? [{ types: searchParams.types }]
@@ -27,12 +31,13 @@ export default async function Page({
           return { types: q };
         });
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  // Fetch activities for the collection
   const { activities }: { activities: Activity[] } = await getActivity({
     collection: tokenAddresses[SUPPORTED_L1_CHAIN_ID] ?? params.id,
     query: { types: types },
   });
 
+  // If the collection has an L2 chain address, display L2ActivityTable
   if (tokenAddresses[SUPPORTED_L2_CHAIN_ID]) {
     return (
       <div className="flex">
@@ -46,7 +51,9 @@ export default async function Page({
         />
       </div>
     );
-  } else if (tokenAddresses[SUPPORTED_L1_CHAIN_ID]) {
+  }
+  // If the collection has an L1 chain address, display ActivityCard
+  else if (tokenAddresses[SUPPORTED_L1_CHAIN_ID]) {
     return (
       <div className="flex">
         <CollectionActivity />

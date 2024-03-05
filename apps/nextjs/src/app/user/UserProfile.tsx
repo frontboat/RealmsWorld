@@ -14,20 +14,26 @@ export const UserProfile = ({
   l1Address?: string;
   l2Address?: string;
 }) => {
+  // Get the L1 and L2 account addresses
   const { address: l1Account } = useL1Account();
   const { address: l2Account } = useL2Account();
 
+  // Determine which addresses to display
   const l1Shown = l1Address ?? l1Account;
   const l2Shown = l2Address ?? l2Account;
 
+  // Get the Stark display name for the L2 account
   const starkName = useStarkDisplayName(l2Shown);
+
   return (
     <h5>
+      {/* Display the Starknet icon and Stark display name if L2 address is provided */}
       {l2Shown && (
         <div className="flex">
           <Starknet className="mr-2 w-6" /> {starkName}
         </div>
       )}
+      {/* Display the Ethereum logo and shortened L1 address if L1 address is provided */}
       {l1Shown && (
         <div className="flex">
           <EthereumLogo className="ml-[2px] mr-2 w-[22px]" />

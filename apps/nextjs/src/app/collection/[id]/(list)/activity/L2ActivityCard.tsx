@@ -14,18 +14,16 @@ interface ActivityCardProps {
 }
 
 export const L2ActivityCard = ({ activity }: ActivityCardProps) => {
-  // convert unix to time
+  // Convert unix to time
   const date =
     "updated_at" in activity && activity.updated_at
       ? new Date(activity.updated_at)
       : null;
 
+  // Get elapsed time since the activity
   function getElapsedTime() {
-    // get time difference from now
     if (date) {
       const timeDiff = Math.abs(Date.now() - date.getTime());
-
-      // get time difference in various units
       const seconds = Math.floor(timeDiff / 1000);
       const minutes = Math.floor(seconds / 60);
       const hours = Math.floor(minutes / 60);
@@ -34,7 +32,6 @@ export const L2ActivityCard = ({ activity }: ActivityCardProps) => {
       const months = Math.floor(days / 30);
       const years = Math.floor(days / 365);
 
-      // return the most appropriate unit
       if (seconds < 60)
         return `${seconds} second${seconds === 1 ? "" : "s"} ago`;
       if (minutes < 60)
@@ -46,12 +43,15 @@ export const L2ActivityCard = ({ activity }: ActivityCardProps) => {
       return `${years} year${years === 1 ? "" : "s"} ago`;
     }
   }
+
+  // Get localized date string
   const getLocalizedDate = () => {
     return date?.toLocaleString();
   };
 
   let eventType;
 
+  // Determine the event type based on activity status
   switch (activity.status) {
     case "filled":
       eventType = "Sale";
@@ -66,40 +66,41 @@ export const L2ActivityCard = ({ activity }: ActivityCardProps) => {
       eventType = "Unknown";
       break;
   }
+
   return (
-    <div className=" flex w-full flex-wrap border-b p-2">
+    <div className="flex w-full flex-wrap border-b p-2">
+      {/* Event Type */}
       <div className="mr-6 w-full flex-none self-center rounded px-4 py-1 font-semibold sm:w-1/12">
         {eventType === "Sale" && <Gavel />}
         {eventType === "Listing" && <NotebookPen />}
         {eventType === "Cancelled Listing" && <Ban />}
         {eventType === "Unknown" && <ArrowRightLeft />}
-
         {eventType}
       </div>
+
       {activity.token && (
         <div className="flex w-full flex-wrap justify-start sm:w-3/12">
+          {/* Token Image */}
           {activity.token.image && (
             <Image
-              src={
-                activity.token.image
-                /*? activity.token.image
-                : activity.collection.collectionImage*/
-              }
+              src={activity.token.image}
               alt="An example image"
               width={60}
               height={60}
               className="self-start rounded-lg"
             />
           )}
+
+          {/* Token Link */}
           {activity.token.token_id && activity.collection_id && (
             <Link
               className="ml-3 flex-none self-center"
               href={`/collection/${getCollectionFromId(activity.collection_id)}/${activity.token.token_id}`}
             >
-              <span className="font-semibold ">
+              <span className="font-semibold">
                 <span className="text-xs opacity-50">
                   #{activity.token.token_id}
-                </span>{" "}
+                </span>
                 <br />
                 {decodeURIComponent(activity.token.name ?? "")}
               </span>
@@ -107,14 +108,8 @@ export const L2ActivityCard = ({ activity }: ActivityCardProps) => {
           )}
         </div>
       )}
-      {/*activity.toAddress && (
-        <div className="w-1/2 sm:w-1/12">
-          <span className="text-xs opacity-50">to:</span> <br />
-          <Link href={`/user/${activity.toAddress}`}>
-            {activity.toAddress ? shortenHex(activity.toAddress) : ""}
-          </Link>
-        </div>
-      )*/}
+
+      {/* From Address */}
       <div className="w-1/2 sm:w-2/12">
         <span className="text-xs opacity-50">from:</span> <br />
         {activity.created_by ? (
@@ -125,6 +120,8 @@ export const L2ActivityCard = ({ activity }: ActivityCardProps) => {
           "-"
         )}
       </div>
+
+      {/* To Address */}
       <div className="w-1/2 sm:w-2/12">
         {activity.purchaser && (
           <>
@@ -140,18 +137,15 @@ export const L2ActivityCard = ({ activity }: ActivityCardProps) => {
         )}
       </div>
 
+      {/* Price */}
       <div className="flex w-1/2 self-center font-semibold sm:w-2/12">
-        {/*activity.type != "transfer" &&
-          (activity.price?.currency ? (
-            <div className="self-center">
-              {activity.price?.amount.native} {activity.price?.currency.symbol}
-            </div>
-          ) : (*/}
         <div className="flex items-center self-center">
           {activity.price ?? 0}
           <LordsIcon className="ml-2 h-5 w-5 fill-current" />
         </div>
       </div>
+
+      {/* Elapsed Time */}
       <div className="mt-2 flex w-1/2 justify-end sm:mt-0 sm:w-1/12">
         <div className="flex space-x-4 self-center px-4">
           <span

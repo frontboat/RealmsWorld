@@ -23,10 +23,14 @@ export const ContractImage = ({
   tokenId: number;
   collectionId: string;
 }) => {
+  // Check if the collection is "beasts"
   const isBeasts = collectionId == "beasts";
+
+  // Get the token address based on the collection ID and supported chain ID
   const tokenAddress =
     getCollectionAddresses(collectionId)[SUPPORTED_L2_CHAIN_ID];
 
+  // Fetch token URI data from the contract
   const { data } = useContractRead({
     functionName: "token_uri",
     args: [tokenId],
@@ -34,6 +38,8 @@ export const ContractImage = ({
     address: tokenAddress,
     watch: true,
   });
+
+  // Process the token URI data
   const tokenUriData = useMemo(() => {
     //@ts-expect-error data does have length
     if (data?.length) {
@@ -57,8 +63,10 @@ export const ContractImage = ({
       return JSON.parse(modifiedJsonString);
     }
   }, [data]);
+
   return (
     <>
+      {/* Render the token image if available */}
       {tokenUriData?.image ? (
         <>
           <h1 className="text-center">{decodeURI(tokenUriData.name)}</h1>
@@ -71,9 +79,11 @@ export const ContractImage = ({
           />
         </>
       ) : (
+        // Render a loader if the token image is not available
         <Loader className="w-30 mx-auto animate-spin" />
       )}
 
+      {/* Render additional information for "beasts" collection */}
       {collectionId == "beasts" && tokenUriData?.attributes?.length && (
         <div className="mt-4 rounded border bg-dark-green">
           <div className="flex items-center justify-between border-b px-3 py-2 pr-6">

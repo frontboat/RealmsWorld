@@ -14,16 +14,14 @@ interface ActivityCardProps {
 }
 
 export const ListingCard = ({ activity, token }: ActivityCardProps) => {
-  // convert unix to time
-
   const expiryDiff = useTimeDiff(activity.expiration ?? Date.now());
   const getLocalizedDate = () => {
     return expiryDiff.toLocaleString();
   };
 
   return (
-    <div className=" flex w-full flex-wrap border-b p-2">
-      <div className="flex w-1/2 self-center font-semibold sm:w-2/12 ">
+    <div className="flex w-full flex-wrap border-b p-2">
+      <div className="flex w-1/2 self-center font-semibold sm:w-2/12">
         <div className="flex items-center self-center">
           {activity.price ?? 0}
           <LordsIcon className="ml-2 h-5 w-5 fill-current" />
@@ -39,7 +37,6 @@ export const ListingCard = ({ activity, token }: ActivityCardProps) => {
           "-"
         )}
       </div>
-
       <div className="mt-2 flex w-1/2 justify-end sm:mt-0 sm:w-3/12">
         <div className="flex space-x-4 self-center px-4">
           <span
@@ -58,9 +55,7 @@ export const ListingCard = ({ activity, token }: ActivityCardProps) => {
                 Buy Now
               </Button>
             }
-            // tokenId={tokenId}
             token={token}
-            //collectionId={activity.collection_id}
             orderId={0}
           />
         )}
